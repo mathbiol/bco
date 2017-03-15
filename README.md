@@ -25,3 +25,6 @@ ___
 * Thank you Michael :-), have a look at [W3C's Cool URIs](https://www.w3.org/TR/cooluris/).
 * Example of a BCO at [hive.biochemistry.gwu.edu/htscsrs/examples](https://hive.biochemistry.gwu.edu/htscsrs/examples).
 * BCO is a meta standard (meta object), an example might be [precison FDA](http://blog.dnanexus.com/2015-08-05-precisionfda-a-community-approach-for-submitting-evaluating-diagnostic-tests/) which was awarded do [NDAnexus](https://www.dnanexus.com).
+* There is an humbrella organization for open standards, [researchworkflows.org](http://researchworkflows.org).
+* Study [https://github.com/common-workflow-language/hive-cwl-examples](https://github.com/common-workflow-language/hive-cwl-examples).
+and study this one too: [https://view.commonwl.org/workflows/github.com/NCI-GDC/gdc-dnaseq-cwl/tree/vizu/workflows/dnaseq](https://view.commonwl.org/workflows/github.com/NCI-GDC/gdc-dnaseq-cwl/tree/vizu/workflows/dnaseq)
