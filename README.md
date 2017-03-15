@@ -23,3 +23,5 @@ ___
 * There are other worflow languages that need to be considered in equal footing with CWL, such **Workflow Description Language** ([WDL](https://github.com/broadinstitute/wdl)).
 * It may be worth exploring some non-declarative solution such as [functional (prototypal) inheritance](http://javascript.crockford.com/prototypal.html) of code. Never a bad idea visiting one of [Eliot's discussions](https://medium.com/javascript-scene/3-different-kinds-of-prototypal-inheritance-es6-edition-32d777fa16c9#.vuoa4efxz) on this topic.
 * Thank you Michael :-), have a look at [W3C's Cool URIs](https://www.w3.org/TR/cooluris/).
+* Example of a BCO at [hive.biochemistry.gwu.edu/htscsrs/examples](https://hive.biochemistry.gwu.edu/htscsrs/examples).
+* BCO is a meta standard (meta object), an example might be [precison FDA](http://blog.dnanexus.com/2015-08-05-precisionfda-a-community-approach-for-submitting-evaluating-diagnostic-tests/) which was awarded do [NDAnexus](https://www.dnanexus.com).
