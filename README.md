@@ -1,8 +1,8 @@
-# biocomp
+# experimenting with biocompute objects
 playing with ideas about BioCompute Objects while at https://hive.biochemistry.gwu.edu/htscsrs/workshop_2017
 
 ___
-Live at [https://mathbiol.github.io/biocomp](https://mathbiol.github.io/biocomp) ! 
+Live at [https://mathbiol.github.io/bco](https://mathbiol.github.io/biocomp) ! 
 ___
 
 In this experiment we'll look for ways to assembled biocompute objects taken very broadly as a concept 
@@ -29,3 +29,6 @@ ___
 * Study [https://github.com/common-workflow-language/hive-cwl-examples](https://github.com/common-workflow-language/hive-cwl-examples).
 and study this one too: [https://view.commonwl.org/workflows/github.com/NCI-GDC/gdc-dnaseq-cwl/tree/vizu/workflows/dnaseq](https://view.commonwl.org/workflows/github.com/NCI-GDC/gdc-dnaseq-cwl/tree/vizu/workflows/dnaseq).
 * --> [Open Science workshop document](https://osf.io/w77mt). OSF is midleware for open science!
+* BioCompute Object at [HL7/FHIR](http://build.fhir.org/provenance-example-biocompute-object.json.html)
+ * FDA-HIVE code base open source at [https://github.com/FDA/fda-hive](https://github.com/FDA/fda-hive).
+ * Keep an eye on [GA4GH's server](http://1kgenomes.ga4gh.org/).
