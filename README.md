@@ -2,7 +2,7 @@
 playing with ideas about BioCompute Objects while at https://hive.biochemistry.gwu.edu/htscsrs/workshop_2017
 
 ___
-Live at [https://mathbiol.github.io/bco](https://mathbiol.github.io/biocomp) ! 
+Live at [https://mathbiol.github.io/bco](https://mathbiol.github.io/bco) ! 
 ___
 
 In this experiment we'll look for ways to assembled biocompute objects taken very broadly as a concept 
