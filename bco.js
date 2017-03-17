@@ -22,7 +22,7 @@ BCO = function (url){
 
 BCO.UI=function(div,bco){ // creates UI in target div
     console.log('bcoDiv found, assembling UI')
-    var h = '<a href="http://bit.ly/bcoexec" target="_blank"><img src="qrCode.jpg"> http://bit.ly/bcoexec</a><h3 style="color:maroon">Experimenting with<br> Biocompute Objects (BCO) <a href="https://github.com/mathbiol/bco" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i></a></h3><hr>'
+    var h = '<h2><a href="http://bit.ly/bcoexec" target="_blank"><img src="qrCode.jpg"> bit.ly/bcoexec</a></h2><h3 style="color:maroon">Experimenting with<br> Biocompute Objects (BCO) <a href="https://github.com/mathbiol/bco" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i></a></h3><hr>'
     h +='<div id="bcoCompDiv"></div>' // where the computation will happen
     div.innerHTML=h
 
