@@ -39,7 +39,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
     h = 'Type or paste URL of parent BCO: <br><input id="parentURLinput" size=100><br>'
-    h += '... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank">GWU</a>:<br>'
+    h += '... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:<br>'
     h += '<select id="selectParent"></select>'
     h += '<hr>'
     h += '<div id="bcoEditorDiv"></div>'
