@@ -1,0 +1,100 @@
+{
+    "id": "obj.1288", 
+    "name": "EGFR_mutation_detection_in_BreastCancer_patients", 
+    "title": "Detection of EGFR [HGNC:3236] mutations in DNAseq samples from human [taxID:9606] breast cancer [DOID:1612] patients", 
+    "version": "1.0", 
+    "createdby": "naila_gulzar@gwu.edu", 
+    "created": "Feb 03, 2017 17:37:17", 
+    "modified": "Mar 14, 2017 21:55:12", 
+    "verification_status": "unreviewed", 
+    "publication_status": "draft", 
+    "usability_domain": [
+        "Analysis DNAseq samples for EGFR muations in human breast cancer patients"
+    ], 
+    "authors": [
+        {
+            "orcid": "0000-0002-8138-8312"
+        }
+    ], 
+    "description_domain": {
+        "keywords": [
+            "EGFR", 
+            "mutaions"
+        ], 
+        "xref": [
+            "https://www.ncbi.nlm.nih.gov/nuccore/NC_000007.14"
+        ], 
+        "pipeline_steps": [
+            {
+                "tool_name": "Hexagon", 
+                "tool_desc": "Alignment of reads to a set of references", 
+                "tool_version": "1.0", 
+                "tool_package": "null", 
+                "step_number": "1", 
+                "input_uri_list": [
+                    "https://hive.biochemistry.gwu.edu/111111", 
+                    "https://hive.biochemistry.gwu.edu/111112", 
+                    "https://www.ncbi.nlm.nih.gov/nuccore/NC_000007.14"
+                ], 
+                "output_uri_list": [
+                    "https://hive.biochemistry.gwu.edu/222222"
+                ]
+            }, 
+            {
+                "tool_name": "Heptagon", 
+                "tool_desc": "Variant calling", 
+                "tool_version": "1.0", 
+                "tool_package": "null", 
+                "step_number": "2", 
+                "input_uri_list": [
+                    "https://hive.biochemistry.gwu.edu/222222"
+                ], 
+                "output_uri_list": [
+                    "https://hive.biochemistry.gwu.edu/snpProfile/444444", 
+                    "hive://data/222223/SNPProfile.csv"
+                ]
+            }
+        ]
+    }, 
+    "execution_domain": {
+        "script": "hive://workflows/EGFR_mutation_detection_hive.py", 
+        "pipeline_version": "1.0", 
+        "platform": "HIVE", 
+        "driver": "//hive.biochemistry.gwu.edu/hive-driver", 
+        "prerequisites": [
+            "HIVE_hexagon ", 
+            "HIVE_heptagon"
+        ], 
+        "env_parameters": [
+            "HIVEv1.4.3"
+        ]
+    }, 
+    "parametric_domain": {
+        "complexityRefEntropy": "1", 
+        "maximumPercentLowQualityAllowed": "0", 
+        "keepMarkovnikovMatches": "1", 
+        "keepAllMatches": "3", 
+        "complexityWindow": "30", 
+        "maxMissQueryPercent": "15", 
+        "minMatchLen": "75", 
+        "complexityEntropy": "1.2", 
+        "acceptNNNQuaTrheshold": "1", 
+        "complexityRefWindow": "30", 
+        "minCover": "1"
+    }, 
+    "io_domain": {
+        "reference_uri_list": [
+            "https://www.ncbi.nlm.nih.gov/nuccore/NC_000007.14v", 
+            "https://genomes/222222"
+        ], 
+        "input_uri_list": [
+            "https://nuc-read/111111", 
+            "https://nuc-read/111112", 
+            "https://genomes/222222"
+        ], 
+        "output_uri_list": [
+            "hive://data/444444/allCount-aligned.csv", 
+            "hive://data/444444/SNPProfile.csv"
+        ]
+    }
+}

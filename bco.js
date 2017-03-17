@@ -30,7 +30,13 @@ BCO.UI=function(div,bco){ // creates UI in target div
     var gwu = {
         'SNP detection':'https://mathbiol.github.io/bco/BCOexamples/snpDetection.json',
         'Metagenomics':'https://mathbiol.github.io/bco/BCOexamples/metagenomics.json',
-        'Huntington Disease':'https://mathbiol.github.io/bco/BCOexamples/huntingtonDisease.json'
+        'Huntington Disease':'https://mathbiol.github.io/bco/BCOexamples/huntingtonDisease.json',
+        'metagenomics':'https://mathbiol.github.io/bco/BCOexamples/metagenomics.json',
+        'recombinant antihemophilic factor':'https://mathbiol.github.io/bco/BCOexamples/recombinant.json',
+        'RNA-seq analysis of ER':'https://mathbiol.github.io/bco/BCOexamples/rnaSeq.json',
+        'Quasispecies_analysis_of_HIV-1_viruses':'https://mathbiol.github.io/bco/BCOexamples/hiv.json',
+        'Viral taxID 10239 screening':'https://mathbiol.github.io/bco/BCOexamples/viral.json',
+        'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
     h = 'Type or paste URL of parent BCO: <br><input id="parentURLinput" size=100><br>'
     h += '... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank">GWU</a>:<br>'

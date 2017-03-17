@@ -33,3 +33,4 @@ and study this one too: [https://view.commonwl.org/workflows/github.com/NCI-GDC/
  * FDA-HIVE code base open source at [https://github.com/FDA/fda-hive](https://github.com/FDA/fda-hive).
  * Keep an eye on [GA4GH's server](http://1kgenomes.ga4gh.org/).
  * Ben's [slides](https://www.slideshare.net/benbusby) and [hackathons](https://ncbi-hackathons.github.io/). 
+* Ring of FHIR with [sync4genes.org](http://sync4genes.org/) (thank you Gil!).
