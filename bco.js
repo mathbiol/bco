@@ -22,7 +22,7 @@ BCO = function (url){
 
 BCO.UI=function(div,bco){ // creates UI in target div
     console.log('bcoDiv found, assembling UI')
-    var h = '<h2><button id="hideQR" type="button" class="btn btn-primary">QR</button> <a href="http://bit.ly/bcoexec" target="_blank"><img id="qrCode" src="qrCode.jpg" hidden=true>bit.ly/bcoexec</a></h2><h3 style="color:maroon">Experimenting with<br> Biocompute Objects (BCO) <a href="https://github.com/mathbiol/bco" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i></a></h3><hr>'
+    var h = '<h2><img id="qrCode" src="qrCode.jpg" hidden=true><br><button id="hideQR" type="button" class="btn btn-primary">QR</button> <a href="http://bit.ly/bcoexec" target="_blank">bit.ly/bcoexec</a></h2><h3 style="color:maroon">Experimenting with<br> Biocompute Objects (BCO) <a href="https://github.com/mathbiol/bco" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i></a></h3><hr>'
     h +='<div id="bcoCompDiv"></div>' // where the computation will happen
     div.innerHTML=h
     hideQR.onclick=function(){
@@ -73,12 +73,22 @@ BCO.UI=function(div,bco){ // creates UI in target div
     return div
 }
 
+BCO.edit=function(that){
+    var attr = that.id.slice(5) // what comes after 'edit'
+    var h = '<span id="doneEdit_'+attr+'" style="color:green;cursor:pointer"><i class="fa fa-check" aria-hidden="true"></i> done</span>'
+    h += ' <span id="cancelEdit_'+attr+'" style="color:orange;cursor:pointer"><i class="fa fa-reply" aria-hidden="true"></i> cancel</span>'
+    h += ' <span id="deleteEdit_'+attr+'" style="color:red;cursor:pointer"><i class="fa fa-times" aria-hidden="true"></i> erase</span>'
+    h += '<textArea id="textArea_'+attr+'" style="vertical-align:top;width:100%">'+that.parentElement.textContent+'</textArea>'
+    that.parentElement.innerHTML=h
+}
+
 BCO.bcoEditor=function(bc){
     if(typeof(bc)=='string'){
         bcoEditorDiv.innerHTML='loading '+bc
         $.getJSON(bc)
          .then(function(jsn){
              console.log('editing '+bc)
+             jsn.parentURI = parentURLinput.value            
              BCO.bcoEditor(jsn)
          })
     }else{
@@ -118,7 +128,8 @@ BCO.bcoEditor=function(bc){
                     4
                 }
             }else{
-                sp.innerHTML=p+': <span style="color:blue">'+bc[p]+'</span>'
+                sp.innerHTML=p+': <span style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
+                document.getElementById('edit_'+p).onclick=function(){BCO.edit(this)}
             }
             sp.style.color='maroon'
                 
