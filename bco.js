@@ -73,14 +73,69 @@ BCO.UI=function(div,bco){ // creates UI in target div
     return div
 }
 
-BCO.edit=function(that){
-    var attr = that.id.slice(5) // what comes after 'edit'
-    var h = '<span id="doneEdit_'+attr+'" style="color:green;cursor:pointer"><i class="fa fa-check" aria-hidden="true"></i> done</span>'
-    h += ' <span id="cancelEdit_'+attr+'" style="color:orange;cursor:pointer"><i class="fa fa-reply" aria-hidden="true"></i> cancel</span>'
-    h += ' <span id="deleteEdit_'+attr+'" style="color:red;cursor:pointer"><i class="fa fa-times" aria-hidden="true"></i> erase</span>'
-    h += '<textArea id="textArea_'+attr+'" style="vertical-align:top;width:100%">'+that.parentElement.textContent+'</textArea>'
-    that.parentElement.innerHTML=h
+BCO.edit=function(that,p,bc){
+    //var attr = that.id.slice(5) // what comes after 'edit'
+    var h = '<b style="color:maroon">'+p+'</b> '
+    h += '<span id="doneEdit_'+p+'" style="color:green;cursor:pointer" onclick="BCO.doneEdit(this)"><i class="fa fa-check" aria-hidden="true"></i> done</span>'
+    h += ' <span id="cancelEdit_'+p+'" style="color:orange;cursor:pointer"><i class="fa fa-reply" aria-hidden="true"></i> cancel</span>'
+    h += ' <span id="deleteEdit_'+p+'" style="color:red;cursor:pointer"><i class="fa fa-times" aria-hidden="true"></i> erase</span>'
+    h += '<textArea id="textArea_'+p+'" style="vertical-align:top;width:100%;background-color:WhiteSmoke">'+that.parentElement.textContent+'</textArea>'
+    var el = that.parentElement // editing literal
+    el.innerHTML=h
+    if(typeof(bc[p])=="object"){ // if it's an object we're editing
+        var ta = document.getElementById('textArea_'+p)
+        ta.style.height=ta.scrollHeight+"px"
+        ta.style.color="blue"
+        ta.onkeyup=function(){
+            this.style.height=this.scrollHeight+"px"
+        }
+    }
+    // adjust text area to nature of field
+    4
 }
+
+/*
+BCO.editParm=function(bc,p){
+    var div = document.createElement('div')
+    div.id='parameter_'+p
+    bcoEditorDiv.appendChild(div)
+    var sp = document.createElement('span')
+    sp.innerHTML=p
+    div.appendChild(sp)
+    if(typeof(bc[p])=='object'){
+        var spHide = document.createElement('span')
+        spHide.innerHTML=' + '
+        spHide.style.color='blue'
+        spHide.id='hide_'+p
+        div.appendChild(spHide)
+        var spEdit = document.createElement('span')
+        spEdit.innerHTML='<i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
+        div.appendChild(spEdit)
+        spEdit.hidden=true
+        spEdit.onclick=function(){BCO.edit(this,p,bc)}
+        var pr = document.createElement('pre')
+        div.appendChild(pr)
+        pr.textContent=JSON.stringify(bc[p],null,3)
+        pr.hidden=true
+        spHide.onclick=function(){
+        if(this.textContent==' + '){
+            this.innerHTML=' - '
+            this.style.color='red'
+            pr.hidden=spEdit.hidden=false
+            //BCO.edit(this)
+        } else {
+            this.textContent=' + '
+            this.style.color='blue'
+            pr.hidden=spEdit.hidden=true
+        }
+        }
+    }else{
+        sp.innerHTML=p+': <span style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
+        document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bc)}
+    }
+    sp.style.color='maroon'
+}
+*/
 
 BCO.bcoEditor=function(bc){
     if(typeof(bc)=='string'){
@@ -103,33 +158,34 @@ BCO.bcoEditor=function(bc){
             div.appendChild(sp)
             if(typeof(bc[p])=='object'){
                 var spHide = document.createElement('span')
-                //spHide.className='btn btn-primary'
-                //spHide.type='button'
                 spHide.innerHTML=' + '
                 spHide.style.color='blue'
                 spHide.id='hide_'+p
                 div.appendChild(spHide)
+                var spEdit = document.createElement('span')
+                spEdit.innerHTML='<i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
+                div.appendChild(spEdit)
+                spEdit.hidden=true
+                spEdit.onclick=function(){BCO.edit(this,p,bc)}
                 var pr = document.createElement('pre')
                 div.appendChild(pr)
                 pr.textContent=JSON.stringify(bc[p],null,3)
                 pr.hidden=true
                 spHide.onclick=function(){
                     if(this.textContent==' + '){
-                        this.textContent=' - '
+                        this.innerHTML=' - '
                         this.style.color='red'
-                        pr.hidden=false
+                        pr.hidden=spEdit.hidden=false
+                        //BCO.edit(this)
                     } else {
                         this.textContent=' + '
                         this.style.color='blue'
-                        pr.hidden=true
+                        pr.hidden=spEdit.hidden=true
                     }
-
-                    
-                    4
                 }
             }else{
                 sp.innerHTML=p+': <span style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
-                document.getElementById('edit_'+p).onclick=function(){BCO.edit(this)}
+                document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bc)}
             }
             sp.style.color='maroon'
                 
@@ -143,6 +199,12 @@ BCO.bcoEditor=function(bc){
     }
     
 };
+
+BCO.doneEdit=function(that){
+    var div = that.parentElement
+    var parm = div.id.slice(10)
+    debugger
+}
 
 
 //(function(){new BCO()})()
