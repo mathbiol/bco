@@ -7,6 +7,8 @@ BCO = function (url){
         this.url=url
     }
 
+    this.dt={}
+
     ////// ini //////
     var that = this
     if(url){this.load(url)}
@@ -68,20 +70,30 @@ BCO.UI=function(div,bco){ // creates UI in target div
     }
     if(bco.url){ // if url was provided already
         parentURLinput.value=bco.url
-        BCO.bcoEditor(bco.url)
+        BCO.bcoEditor(bco.url,bco)
     }
     return div
 }
 
-BCO.edit=function(that,p,bc){
+BCO.edit=function(that,p,bco){
+    var bc=bco.dt
     //var attr = that.id.slice(5) // what comes after 'edit'
+    if($('pre',that.parentElement).length==0){
+        that=that.parentElement
+    }
+    //this.bco=bco 
     var h = '<b style="color:maroon">'+p+'</b> '
     h += '<span id="doneEdit_'+p+'" style="color:green;cursor:pointer" onclick="BCO.doneEdit(this)"><i class="fa fa-check" aria-hidden="true"></i> done</span>'
-    h += ' <span id="cancelEdit_'+p+'" style="color:orange;cursor:pointer"><i class="fa fa-reply" aria-hidden="true"></i> cancel</span>'
-    h += ' <span id="deleteEdit_'+p+'" style="color:red;cursor:pointer"><i class="fa fa-times" aria-hidden="true"></i> erase</span>'
-    h += '<textArea id="textArea_'+p+'" style="vertical-align:top;width:100%;background-color:WhiteSmoke">'+that.parentElement.textContent+'</textArea>'
+    h += ' <span id="cancelEdit_'+p+'" style="color:orange;cursor:pointer" onclick="BCO.doneEdit(this,\'cancel\')"><i class="fa fa-reply" aria-hidden="true"></i> cancel</span>'
+    h += ' <span id="deleteEdit_'+p+'" style="color:red;cursor:pointer" onclick="BCO.doneEdit(this,\'erase\')"><i class="fa fa-times" aria-hidden="true"></i> erase</span>'
+    if($('pre',that.parentElement).length>0){ // it's an object
+        h += '<textArea id="textArea_'+p+'" style="vertical-align:top;width:100%;background-color:WhiteSmoke">'+$('pre',that.parentElement)[0].textContent+'</textArea>'
+    }else{ // it's a literal
+        h += '<br><textArea id="textArea_'+p+'" style="vertical-align:top;width:100%;background-color:WhiteSmoke;color:blue">'+that.textContent+'</textArea>'
+    }
     var el = that.parentElement // editing literal
     el.innerHTML=h
+    el.bco=bco // passing bco instance as reference available in the edit element
     if(typeof(bc[p])=="object"){ // if it's an object we're editing
         var ta = document.getElementById('textArea_'+p)
         ta.style.height=ta.scrollHeight+"px"
@@ -94,11 +106,16 @@ BCO.edit=function(that,p,bc){
     4
 }
 
-/*
-BCO.editParm=function(bc,p){
-    var div = document.createElement('div')
+
+BCO.editParm=function(bco,p,div){
+    var bc=bco.dt
+    if(!div){ // first time 
+        div = document.createElement('div')
+        bcoEditorDiv.appendChild(div)
+    }else{ // editing exiting
+        div.innerHTML='' // reset existing div
+    }
     div.id='parameter_'+p
-    bcoEditorDiv.appendChild(div)
     var sp = document.createElement('span')
     sp.innerHTML=p
     div.appendChild(sp)
@@ -112,7 +129,7 @@ BCO.editParm=function(bc,p){
         spEdit.innerHTML='<i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
         div.appendChild(spEdit)
         spEdit.hidden=true
-        spEdit.onclick=function(){BCO.edit(this,p,bc)}
+        spEdit.onclick=function(){BCO.edit(this,p,bco)}
         var pr = document.createElement('pre')
         div.appendChild(pr)
         pr.textContent=JSON.stringify(bc[p],null,3)
@@ -130,68 +147,30 @@ BCO.editParm=function(bc,p){
         }
         }
     }else{
-        sp.innerHTML=p+': <span style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
-        document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bc)}
+        sp.innerHTML=p+': <span id=parmName_'+p+' style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
+        document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bco)}
     }
     sp.style.color='maroon'
 }
-*/
 
-BCO.bcoEditor=function(bc){
+
+BCO.bcoEditor=function(bc,bco){
     if(typeof(bc)=='string'){
         bcoEditorDiv.innerHTML='loading '+bc
         $.getJSON(bc)
          .then(function(jsn){
              console.log('editing '+bc)
+             //bc.bcoJSON=jsn
              jsn.parentURI = parentURLinput.value            
-             BCO.bcoEditor(jsn)
+             BCO.bcoEditor(jsn,bco)
          })
     }else{
         //bcoEditorDiv.innerHTML=JSON.stringify(bc,3)
+        bco.dt=bc // storing teh data in teh instance object
         bcoEditorDiv.innerHTML='' // reseting div content
         Object.getOwnPropertyNames(bc).forEach(function(p){
-            var div = document.createElement('div')
-            div.id='parameter_'+p
-            bcoEditorDiv.appendChild(div)
-            var sp = document.createElement('span')
-            sp.innerHTML=p
-            div.appendChild(sp)
-            if(typeof(bc[p])=='object'){
-                var spHide = document.createElement('span')
-                spHide.innerHTML=' + '
-                spHide.style.color='blue'
-                spHide.id='hide_'+p
-                div.appendChild(spHide)
-                var spEdit = document.createElement('span')
-                spEdit.innerHTML='<i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
-                div.appendChild(spEdit)
-                spEdit.hidden=true
-                spEdit.onclick=function(){BCO.edit(this,p,bc)}
-                var pr = document.createElement('pre')
-                div.appendChild(pr)
-                pr.textContent=JSON.stringify(bc[p],null,3)
-                pr.hidden=true
-                spHide.onclick=function(){
-                    if(this.textContent==' + '){
-                        this.innerHTML=' - '
-                        this.style.color='red'
-                        pr.hidden=spEdit.hidden=false
-                        //BCO.edit(this)
-                    } else {
-                        this.textContent=' + '
-                        this.style.color='blue'
-                        pr.hidden=spEdit.hidden=true
-                    }
-                }
-            }else{
-                sp.innerHTML=p+': <span style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
-                document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bc)}
-            }
-            sp.style.color='maroon'
-                
-
-            4
-
+            BCO.editParm(bco,p) // note bco instance being passed by reference
+            //this.bcoJSON=bc
         })
         setTimeout(function(){
             hide_execution_domain.click()
@@ -200,11 +179,42 @@ BCO.bcoEditor=function(bc){
     
 };
 
-BCO.doneEdit=function(that){
+BCO.doneEdit=function(that,cmd){
+    cmd=cmd||'done'
     var div = that.parentElement
+    var bco = div.bco
+    if(div.id.length==0){ // this is a literal
+        div=div.parentElement
+        $('textarea',div)[0].value=JSON.stringify($('textarea',div)[0].value)
+    }
     var parm = div.id.slice(10)
-    debugger
+
+    switch (cmd){
+        case 'done':            
+            bco.dt[parm]=JSON.parse($('textarea',div)[0].value) // update bco.dt parm           
+            BCO.editParm(bco,parm,div) // reassemble div
+            // if it is a structure show <pre>
+            if($('pre',div).length>0){
+                $('#hide_'+parm,div)[0].click()
+            }
+            break;
+        case 'cancel':
+            BCO.editParm(bco,parm,div) // reassemble div
+            // if it is a structure show <pre>
+            if($('pre',div).length>0){
+                $('#hide_'+parm,div)[0].click()
+            }
+            break;
+        case 'erase':
+            delete bco.dt[parm]
+            div.parentElement.removeChild(div)
+    }
+
+            
+
+            
 }
+
 
 
 //(function(){new BCO()})()
