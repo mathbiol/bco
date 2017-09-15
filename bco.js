@@ -62,7 +62,8 @@ BCO.UI=function(div,bco){ // creates UI in target div
     })
     selectParent.onchange=function(s,m){
         parentURLinput.value=gwu[selectParent.selectedOptions[0].value]
-        BCO.bcoEditor(parentURLinput.value)
+        //BCO.bcoEditor(parentURLinput.value)
+        bco = new BCO(parentURLinput.value)
     }
     // on input url change
     parentURLinput.onchange=function(ip){
@@ -219,4 +220,5 @@ BCO.doneEdit=function(that,cmd){
 
 //(function(){new BCO()})()
 
-bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
+// bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
+bco = new BCO('BCOexamples/snpDetection.json')
