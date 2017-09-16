@@ -48,11 +48,12 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'Viral taxID 10239 screening':'https://mathbiol.github.io/bco/BCOexamples/viral.json',
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
-    h = 'Type or paste URL of parent BCO: <br><input id="parentURLinput" size=100><br>'
+    h = 'Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" size=100><br>'
     h += '... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:<br>'
     h += '<select id="selectParent"></select>'
     h += '<hr>'
-    h += '<div id="bcoEditorDiv"></div>'
+    h += '<div id="bcoEditorDiv"></div>'  
+    h += '<hr>'
     bcoCompDiv.innerHTML=h
     Object.getOwnPropertyNames(gwu).forEach(function(p){
         var op = document.createElement('option')
@@ -60,14 +61,16 @@ BCO.UI=function(div,bco){ // creates UI in target div
         op.value=p
         selectParent.appendChild(op)
     })
+    selectParent.selectedIndex=div.selectedIndex||0 // recalling previous index if any
     selectParent.onchange=function(s,m){
         parentURLinput.value=gwu[selectParent.selectedOptions[0].value]
         //BCO.bcoEditor(parentURLinput.value)
+        bco.div.selectedIndex=selectParent.selectedIndex
         bco = new BCO(parentURLinput.value)
     }
     // on input url change
     parentURLinput.onchange=function(ip){
-       BCO.bcoEditor(ip.target.value)
+       bco = new BCO(parentURLinput.value)
     }
     if(bco.url){ // if url was provided already
         parentURLinput.value=bco.url
@@ -173,6 +176,31 @@ BCO.bcoEditor=function(bc,bco){
             BCO.editParm(bco,p) // note bco instance being passed by reference
             //this.bcoJSON=bc
         })
+        // create new field
+        var newParm=function(bco){
+            var newDiv = document.createElement('div')
+            newDiv.id='newParmDiv'
+            newDiv.innerHTML='<button style="color:navy" id="createNewField">create new field</button> <input id="newFieldName" style="color:maroon"><br>Literal <input type="checkbox" id="newLit" checked> Structure <input id="newStruct" type="checkbox">'
+            $('#bcoEditorDiv',bco.div)[0].appendChild(newDiv)
+            var newLit = $('#newLit',newDiv)[0]
+            var newStruct = $('#newStruct',newDiv)[0]
+            newStruct.onchange=function(){newLit.checked=!newStruct.checked}
+            newLit.onchange=function(){newStruct.checked=!newLit.checked}
+            var createNewField=$('#createNewField',newDiv)[0]
+            createNewField.onclick=function(){
+                var lala = bco
+                var nm = $('#newFieldName',newDiv)[0].value
+                if(nm.length>0){
+                    if(newStruct.checked){bco.dt[nm]={}}
+                    else{bco.dt[nm]=""}
+                }
+                BCO.editParm(bco,nm)
+                newDiv.parentElement.removeChild(newDiv)
+                newParm(bco)
+            }
+            //debugger
+        }
+        newParm(bco)    
         setTimeout(function(){
             hide_execution_domain.click()
         },1000)
