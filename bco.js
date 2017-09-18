@@ -48,8 +48,10 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'Viral taxID 10239 screening':'https://mathbiol.github.io/bco/BCOexamples/viral.json',
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
-    h = 'Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" size=100><br>'
-    h += '... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:<br>'
+    h = '<li>Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" size=100></li>'
+    h += '<li>... which can also be <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">safely retrieved</a> with a filepicker API from your trusted cloud provider</li>'
+    h += '<span id="getFromDropBox"></span>, Box, Google Drive, Microsoft OneDrive'
+    h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
     h += '<select id="selectParent"></select>'
     h += '<hr style="border-color:maroon">'
     h += '<div id="bcoEditorDiv"></div>'  
@@ -125,6 +127,17 @@ BCO.UI=function(div,bco){ // creates UI in target div
         a.click() // then download it automatically 
         //return a
     }
+    // filePicking - DropBox
+    var buttonDrobBox = Dropbox.createChooseButton({
+        success: function(files) {
+            //console.log("Here's the file link: " + files[0].link)
+            parentURLinput.value=files[0].link
+            bco = new BCO(parentURLinput.value)
+        },
+        linkType: "direct",
+        extensions: ['.json']
+    });
+    getFromDropBox.appendChild(buttonDrobBox)
     //return div
 }
 
@@ -260,7 +273,9 @@ BCO.bcoEditor=function(bc,bco){
         }
         newParm(bco)    
         setTimeout(function(){
-            hide_execution_domain.click()
+            if(document.getElementById('hide_execution_domain')){
+                hide_execution_domain.click()
+            }
         },1000)
     }
     
