@@ -89,11 +89,13 @@ BCO.UI=function(div,bco){ // creates UI in target div
         var pr = $('pre',this.parentElement)[0]
         if(this.textContent=="Show edited BCO structure"){
             this.textContent="Hide edited BCO structure"
+            this.style.backgroundColor="orange"
             pr.hidden=copyEditedBco.hidden=false
             pr.textContent=JSON.stringify(bco.dt,null,3)
             pr.style.color='green'
         }else{
             this.textContent="Show edited BCO structure"
+            this.style.backgroundColor="yellow"
             pr.hidden=copyEditedBco.hidden=true
         }
         //debugger
@@ -101,7 +103,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
     copyEditedBco.onclick=function(){
         var ta = document.createElement('textarea')
         ta.textContent=JSON.stringify(bco.dt,null,3)
-        ta.hidden=true
+        //ta.hidden=true
         document.body.appendChild(ta)
         ta.select()
         document.execCommand('copy')
@@ -172,12 +174,13 @@ BCO.editParm=function(bco,p,div){
     div.appendChild(sp)
     if(typeof(bc[p])=='object'){
         var spHide = document.createElement('span')
-        spHide.innerHTML=' + '
+        //spHide.innerHTML=' + '
+        spHide.innerHTML=' <i class="fa fa-plus-square" aria-hidden="true"></i>'
         spHide.style.color='navy'
         spHide.id='hide_'+p
         div.appendChild(spHide)
         var spEdit = document.createElement('span')
-        spEdit.innerHTML='<i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
+        spEdit.innerHTML=' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
         div.appendChild(spEdit)
         spEdit.hidden=true
         spEdit.onclick=function(){BCO.edit(this,p,bco)}
@@ -187,16 +190,16 @@ BCO.editParm=function(bco,p,div){
         pr.style.color="navy"
         pr.hidden=true
         spHide.onclick=function(){
-        if(this.textContent==' + '){
-            this.innerHTML=' - '
-            this.style.color='red'
-            pr.hidden=spEdit.hidden=false
-            //BCO.edit(this)
-        } else {
-            this.textContent=' + '
-            this.style.color='blue'
-            pr.hidden=spEdit.hidden=true
-        }
+            if(this.children[0].className=="fa fa-plus-square"){
+                this.children[0].className="fa fa-minus-square"
+                this.style.color='orange'
+                pr.hidden=spEdit.hidden=false
+                //BCO.edit(this)
+            } else {
+                this.children[0].className="fa fa-plus-square"
+                this.style.color='blue'
+                pr.hidden=spEdit.hidden=true
+            }
         }
     }else{
         sp.innerHTML=p+': <span id=parmName_'+p+' style="color:navy;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
@@ -213,7 +216,11 @@ BCO.bcoEditor=function(bc,bco){
          .then(function(jsn){
              console.log('editing '+bc)
              //add automated parameters here ...
-             jsn.parentURL = parentURLinput.value // ... such as parent provenance           
+             if(!jsn.parentURL){
+                 jsn.parentURL = parentURLinput.value // ... such as parent provenance
+             }else{
+                 jsn.parentURL +=', '+parentURLinput.value
+             }
              BCO.bcoEditor(jsn,bco)
          })
     }else{
