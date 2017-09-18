@@ -54,8 +54,9 @@ BCO.UI=function(div,bco){ // creates UI in target div
     h += '<hr style="border-color:maroon">'
     h += '<div id="bcoEditorDiv"></div>'  
     h += '<hr style="border-color:maroon">'
-    h += '<div><button id="showEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Show edited BCO structure</button><pre hidden=true></pre></div>'
-    h += '<div><button style="color:navy;font-weight:bold;background-color:yellow">Download edited BCO structure</button> as a new file (use Chrome).</div>'
+    h += '<div><button id="showEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Show edited BCO structure</button> <button id="copyEditedBco" hidden=true style="color:navy;font-weight:bold;background-color:yellow">Copy to Clipboard</button>'
+    h += '<pre hidden=true></pre></div>'
+    h += '<div><button id="downloadEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Download </button> <span style="color:maroon">with fileName</span> <input style="color:blue"> (only works with <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome</a> !).</div>'
     bcoCompDiv.innerHTML=h
     Object.getOwnPropertyNames(gwu).forEach(function(p){
         var op = document.createElement('option')
@@ -88,14 +89,39 @@ BCO.UI=function(div,bco){ // creates UI in target div
         var pr = $('pre',this.parentElement)[0]
         if(this.textContent=="Show edited BCO structure"){
             this.textContent="Hide edited BCO structure"
-            pr.hidden=false
+            pr.hidden=copyEditedBco.hidden=false
             pr.textContent=JSON.stringify(bco.dt,null,3)
             pr.style.color='green'
         }else{
             this.textContent="Show edited BCO structure"
-            pr.hidden=true
+            pr.hidden=copyEditedBco.hidden=true
         }
         //debugger
+    }
+    copyEditedBco.onclick=function(){
+        var ta = document.createElement('textarea')
+        ta.textContent=JSON.stringify(bco.dt,null,3)
+        ta.hidden=true
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        ta.parentElement.removeChild(ta)
+        //debugger
+    }
+    downloadEditedBco.onclick=function(){
+        var bb = new Blob([JSON.stringify(bco.dt,null,3)]);
+        var url = URL.createObjectURL(bb);
+        var a = document.createElement('a');
+        a.href=url;
+        var fname = $('input',this.parentElement)[0].value
+        if(fname.length>0){
+            a.download=fname;
+
+        }else{
+            a.download='BCO '+ Date() +'.json'
+        }
+        a.click() // then download it automatically 
+        //return a
     }
     //return div
 }
