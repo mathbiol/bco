@@ -67,7 +67,8 @@ BCO.UI=function(div,bco){ // creates UI in target div
     selectParent.onchange=function(s,m){
         parentURLinput.value=gwu[selectParent.selectedOptions[0].value]
         //BCO.bcoEditor(parentURLinput.value)
-        bco.div.selectedIndex=selectParent.selectedIndex
+        //bco.div.selectedIndex=selectParent.selectedIndex
+        bcoDiv.selectedIndex=selectParent.selectedIndex
         bco = new BCO(parentURLinput.value)
     }
     // on input url change
