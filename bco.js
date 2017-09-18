@@ -51,9 +51,10 @@ BCO.UI=function(div,bco){ // creates UI in target div
     h = 'Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" size=100><br>'
     h += '... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:<br>'
     h += '<select id="selectParent"></select>'
-    h += '<hr>'
+    h += '<hr style="border-color:maroon">'
     h += '<div id="bcoEditorDiv"></div>'  
-    h += '<hr>'
+    h += '<hr style="border-color:maroon">'
+    h += '<button style="color:navy;font-weight:bold;background-color:yellow">Download edited BCO structure</button> as a new file (use Chrome).'
     bcoCompDiv.innerHTML=h
     Object.getOwnPropertyNames(gwu).forEach(function(p){
         var op = document.createElement('option')
@@ -72,11 +73,16 @@ BCO.UI=function(div,bco){ // creates UI in target div
     parentURLinput.onchange=function(ip){
        bco = new BCO(parentURLinput.value)
     }
+    parentURLinput.onkeyup=function(ev){
+        if(ev.keyCode==13){ // in case user is trying to reload existing URL
+            parentURLinput.onchange()
+        }
+    }
     if(bco.url){ // if url was provided already
         parentURLinput.value=bco.url
         BCO.bcoEditor(bco.url,bco)
     }
-    return div
+    //return div
 }
 
 BCO.edit=function(that,p,bco){
@@ -126,7 +132,7 @@ BCO.editParm=function(bco,p,div){
     if(typeof(bc[p])=='object'){
         var spHide = document.createElement('span')
         spHide.innerHTML=' + '
-        spHide.style.color='blue'
+        spHide.style.color='navy'
         spHide.id='hide_'+p
         div.appendChild(spHide)
         var spEdit = document.createElement('span')
@@ -137,6 +143,7 @@ BCO.editParm=function(bco,p,div){
         var pr = document.createElement('pre')
         div.appendChild(pr)
         pr.textContent=JSON.stringify(bc[p],null,3)
+        pr.style.color="navy"
         pr.hidden=true
         spHide.onclick=function(){
         if(this.textContent==' + '){
@@ -151,7 +158,7 @@ BCO.editParm=function(bco,p,div){
         }
         }
     }else{
-        sp.innerHTML=p+': <span id=parmName_'+p+' style="color:blue;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
+        sp.innerHTML=p+': <span id=parmName_'+p+' style="color:navy;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
         document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bco)}
     }
     sp.style.color='maroon'
@@ -164,8 +171,8 @@ BCO.bcoEditor=function(bc,bco){
         $.getJSON(bc)
          .then(function(jsn){
              console.log('editing '+bc)
-             //bc.bcoJSON=jsn
-             jsn.parentURI = parentURLinput.value            
+             //add automated parameters here ...
+             jsn.parentURL = parentURLinput.value // ... such as parent provenance           
              BCO.bcoEditor(jsn,bco)
          })
     }else{
@@ -197,6 +204,9 @@ BCO.bcoEditor=function(bc,bco){
                 BCO.editParm(bco,nm)
                 newDiv.parentElement.removeChild(newDiv)
                 newParm(bco)
+            }
+            $('#newFieldName',newDiv)[0].onkeyup=function(ev){
+                if(ev.keyCode==13){createNewField.click()} // allow enter as an equivalent to button click
             }
             //debugger
         }
