@@ -54,7 +54,8 @@ BCO.UI=function(div,bco){ // creates UI in target div
     h += '<hr style="border-color:maroon">'
     h += '<div id="bcoEditorDiv"></div>'  
     h += '<hr style="border-color:maroon">'
-    h += '<button style="color:navy;font-weight:bold;background-color:yellow">Download edited BCO structure</button> as a new file (use Chrome).'
+    h += '<div><button id="showEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Show edited BCO structure</button><pre hidden=true></pre></div>'
+    h += '<div><button style="color:navy;font-weight:bold;background-color:yellow">Download edited BCO structure</button> as a new file (use Chrome).</div>'
     bcoCompDiv.innerHTML=h
     Object.getOwnPropertyNames(gwu).forEach(function(p){
         var op = document.createElement('option')
@@ -81,6 +82,19 @@ BCO.UI=function(div,bco){ // creates UI in target div
     if(bco.url){ // if url was provided already
         parentURLinput.value=bco.url
         BCO.bcoEditor(bco.url,bco)
+    }
+    showEditedBco.onclick=function(){
+        var pr = $('pre',this.parentElement)[0]
+        if(this.textContent=="Show edited BCO structure"){
+            this.textContent="Hide edited BCO structure"
+            pr.hidden=false
+            pr.textContent=JSON.stringify(bco.dt,null,3)
+            pr.style.color='green'
+        }else{
+            this.textContent="Show edited BCO structure"
+            pr.hidden=true
+        }
+        //debugger
     }
     //return div
 }
