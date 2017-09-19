@@ -52,7 +52,8 @@ BCO.UI=function(div,bco){ // creates UI in target div
     h += '<li>... which can also be <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">safely retrieved</a> with a filepicker API from your trusted cloud provider</li>'
     h += '<span id="getFromDropBox"></span>, ' 
     h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span>, '
-    h += 'Google Drive, Microsoft OneDrive'
+    h += '<span id="getFromGDrive" style="cursor:pointer"><img src="gdrive.png" height="24px"></span>, '
+    h += ' Microsoft OneDrive'
     h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
     h += '<select id="selectParent"></select>'
     h += '<hr style="border-color:maroon">'
@@ -154,6 +155,81 @@ BCO.UI=function(div,bco){ // creates UI in target div
         });
         boxSelect.launchPopup()
     }
+    // filePicking - Google Drive
+    gapi.load('auth');gapi.load('picker');
+    getFromGDrive.onclick=function(ev){
+        console.log('clicked on getFromGDrive', ev)
+        var oauthToken // so it can be shared by mutliple functions
+        var developerKey = 'AIzaSyCChql7nN00NVh5fVRhU-O6x97-M5-i62Y';
+        var clientId = '718137972741-u3p75mnbji0ua67o2fvuagpgetlu7doc.apps.googleusercontent.com'
+        var appId = 'biocomputeobject'
+        var pickerApiLoaded = false
+        //var scope = ['https://www.googleapis.com/auth/photos'];
+        var scope = ['https://www.googleapis.com/auth/drive.readonly'];
+        // Use the Google API Loader script to load the google.picker script.
+        function loadPicker() {
+          gapi.load('auth', {'callback': onAuthApiLoad});
+          gapi.load('picker', {'callback': onPickerApiLoad});
+        }
+
+        function onAuthApiLoad() {
+            console.log('running onAuthApiLoad')
+            window.gapi.auth.authorize(
+              {
+                'client_id': clientId,
+                'scope': scope,
+                'immediate': false
+              },
+              handleAuthResult);
+        }
+
+        function onPickerApiLoad() {
+          console.log('running onPickerApiLoad')
+          pickerApiLoaded = true;
+          createPicker();
+        }
+
+        function handleAuthResult(authResult) {
+          console.log('running handleAuthResult')
+          if (authResult && !authResult.error) {
+            oauthToken = authResult.access_token;
+            createPicker();
+          }
+        }
+
+        // Create and render a Picker object for searching images.
+        function createPicker() {
+          console.log('running createPicker')
+          if (pickerApiLoaded && oauthToken) {
+            var view = new google.picker.View(google.picker.ViewId.DOCS);
+            view.setMimeTypes("text/json");
+            var picker = new google.picker.PickerBuilder()
+                .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                .setAppId(appId)
+                .setOAuthToken(oauthToken)
+                .addView(view)
+                .addView(new google.picker.DocsUploadView())
+                .setDeveloperKey(developerKey)
+                .setCallback(pickerCallback)
+                .build();
+             picker.setVisible(true);
+          }
+        }
+
+        // A simple callback implementation.
+        function pickerCallback(data) {
+          console.log('running pickerCallback')
+          if (data.action == google.picker.Action.PICKED) {
+            var fileId = data.docs[0].id;
+            alert('The user selected: ' + fileId);
+          }
+        }
+        onAuthApiLoad()
+        onPickerApiLoad()
+
+    }
+    
     //return div
 }
 
