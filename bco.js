@@ -337,5 +337,5 @@ BCO.doneEdit=function(that,cmd){
 
 //(function(){new BCO()})()
 
-// bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
-bco = new BCO('BCOexamples/snpDetection.json')
+bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
+// bco = new BCO('BCOexamples/snpDetection.json')
