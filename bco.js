@@ -48,9 +48,11 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'Viral taxID 10239 screening':'https://mathbiol.github.io/bco/BCOexamples/viral.json',
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
-    h = '<li>Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" size=100></li>'
+    h = '<li>Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" style="color:blue" size=100></li>'
     h += '<li>... which can also be <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">safely retrieved</a> with a filepicker API from your trusted cloud provider</li>'
-    h += '<span id="getFromDropBox"></span>, Box, Google Drive, Microsoft OneDrive'
+    h += '<span id="getFromDropBox"></span>, ' 
+    h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span>, '
+    h += 'Google Drive, Microsoft OneDrive'
     h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
     h += '<select id="selectParent"></select>'
     h += '<hr style="border-color:maroon">'
@@ -138,6 +140,20 @@ BCO.UI=function(div,bco){ // creates UI in target div
         extensions: ['.json']
     });
     getFromDropBox.appendChild(buttonDrobBox)
+    // filePicking - Box.com
+    getFromBox.onclick=function(){
+        var boxSelect = new BoxSelect({
+            clientId: "ho63k2awp6akn574ruy9wzazhp106y20",
+            linkType: "direct",
+            multiselect: false
+        })
+        boxSelect.success(function(files) {
+            parentURLinput.value=files[0].url
+            bco = new BCO(parentURLinput.value)
+            //console.log(response);
+        });
+        boxSelect.launchPopup()
+    }
     //return div
 }
 
@@ -224,7 +240,7 @@ BCO.editParm=function(bco,p,div){
 
 BCO.bcoEditor=function(bc,bco){
     if(typeof(bc)=='string'){
-        bcoEditorDiv.innerHTML='loading '+bc
+        bcoEditorDiv.innerHTML='<span style="color:red"> loading ...</span>'//+bc
         $.getJSON(bc)
          .then(function(jsn){
              console.log('editing '+bc)
