@@ -48,7 +48,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'Viral taxID 10239 screening':'https://mathbiol.github.io/bco/BCOexamples/viral.json',
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
-    h = '<li>Type or paste URL of parent BCO (then Enter): <br><input id="parentURLinput" style="color:blue" size=100></li>'
+    h = '<h4 style="color:navy">Type or paste URL of parent BCO (then Enter): </h4><input id="parentURLinput" style="color:blue" size=100>'
     h += '<li>... which can also be <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">safely retrieved</a> with a filepicker API from your trusted cloud provider</li>'
     h += '<span id="getFromDropBox"></span>, ' 
     h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span>, '
