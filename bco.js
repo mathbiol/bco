@@ -54,7 +54,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
     h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span>, '
     h += '<label><input type="file" style="font-size:12;color:navy" id="getFromFile"></label>, '
     h += '...'
-    h += '<span id="getFromGDrive" style="cursor:pointer"><img src="gdrive.png" height="24px"></span>, '
+    //h += '<span id="getFromGDrive" style="cursor:pointer"><img src="gdrive.png" height="24px"></span>, '
     //h += ' Microsoft OneDrive'
     //h += '<span id="getFromPicker" style="cursor:pointer"><img src="https://dev.filestack.com/static/assets/icons/logo-primary.png" height="24px"></span>'
     h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
@@ -177,6 +177,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
     }
     
     // filePicking - Google Drive
+    /*
     gapi.load('auth');gapi.load('picker');
     getFromGDrive.onclick=function(ev){
         console.log('clicked on getFromGDrive', ev)
@@ -247,6 +248,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
         onPickerApiLoad()
 
     }
+    */
     
     
     //return div
