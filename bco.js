@@ -158,22 +158,23 @@ BCO.UI=function(div,bco){ // creates UI in target div
         });
         boxSelect.launchPopup()
     }
-    getFromFile.onclick=function(ev){
-        var files = ev.target.files
-        var reader = new FileReader()
-        
-        reader.onload=function(){
-            if(files.length>0){
 
-            }
+    getFromFile.onchange=function(ev){
+        var reader = new FileReader();
+        var file = this.files[0]
+        reader.readAsText(file)
+        reader.onload=function(){
+            console.log(file,this.result)
+            var bco = new BCO()
+            var bc = JSON.parse(this.result)
+            bc.parentURL='localFile://'+file.name
+            BCO.bcoEditor(bc,bco)
+            parentURLinput.value=file.name
 
         }
-        reader.readAsText(files[0])
-
-
-
 
         //debugger
+
     }
     
     // filePicking - Google Drive
@@ -434,5 +435,5 @@ BCO.doneEdit=function(that,cmd){
 
 //(function(){new BCO()})()
 
-bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
-// bco = new BCO('BCOexamples/snpDetection.json')
+//bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
+new BCO('BCOexamples/snpDetection.json')
