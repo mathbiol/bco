@@ -49,11 +49,14 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
     h = '<h4 style="color:navy">Type or paste URL of parent BCO (then Enter): </h4><input id="parentURLinput" style="color:blue" size=100>'
-    h += '<li>... which can also be <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">safely retrieved</a> with a filepicker API from your trusted cloud provider</li>'
+    h += '<li>... by loading it from your device or <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">by safely retrieving it</a> from your trusted cloud provider:</li>'
     h += '<span id="getFromDropBox"></span>, ' 
     h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span>, '
+    h += '<label><input type="file" style="font-size:12;color:navy" id="getFromFile"></label>, '
+    h += '...'
     h += '<span id="getFromGDrive" style="cursor:pointer"><img src="gdrive.png" height="24px"></span>, '
-    h += ' Microsoft OneDrive'
+    //h += ' Microsoft OneDrive'
+    //h += '<span id="getFromPicker" style="cursor:pointer"><img src="https://dev.filestack.com/static/assets/icons/logo-primary.png" height="24px"></span>'
     h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
     h += '<select id="selectParent"></select>'
     h += '<hr style="border-color:maroon">'
@@ -155,6 +158,24 @@ BCO.UI=function(div,bco){ // creates UI in target div
         });
         boxSelect.launchPopup()
     }
+    getFromFile.onclick=function(ev){
+        var files = ev.target.files
+        var reader = new FileReader()
+        
+        reader.onload=function(){
+            if(files.length>0){
+
+            }
+
+        }
+        reader.readAsText(files[0])
+
+
+
+
+        //debugger
+    }
+    
     // filePicking - Google Drive
     gapi.load('auth');gapi.load('picker');
     getFromGDrive.onclick=function(ev){
@@ -202,14 +223,11 @@ BCO.UI=function(div,bco){ // creates UI in target div
           console.log('running createPicker')
           if (pickerApiLoaded && oauthToken) {
             var view = new google.picker.View(google.picker.ViewId.DOCS);
-            view.setMimeTypes("text/json");
+            view.setMimeTypes("application/json");
             var picker = new google.picker.PickerBuilder()
-                .enableFeature(google.picker.Feature.NAV_HIDDEN)
-                .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                .addView(view)
                 .setAppId(appId)
                 .setOAuthToken(oauthToken)
-                .addView(view)
-                .addView(new google.picker.DocsUploadView())
                 .setDeveloperKey(developerKey)
                 .setCallback(pickerCallback)
                 .build();
@@ -229,6 +247,7 @@ BCO.UI=function(div,bco){ // creates UI in target div
         onPickerApiLoad()
 
     }
+    
     
     //return div
 }
