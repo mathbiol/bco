@@ -240,7 +240,11 @@ BCO.editParm=function(bco,p,div){
         div.appendChild(pr)
         pr.textContent=JSON.stringify(bc[p],null,3)
         pr.style.color="navy"
+        pr.style.border=0
+        pr.style.backgroundColor='azure'
+        pr.style.fontSize='x-small'
         pr.hidden=true
+        lala = pr
         spHide.onclick=function(){
             if(this.children[0].className=="fa fa-plus-square"){
                 this.children[0].className="fa fa-minus-square"
