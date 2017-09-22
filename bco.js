@@ -232,7 +232,7 @@ BCO.editParm=function(bco,p,div){
         spHide.id='hide_'+p
         div.appendChild(spHide)
         var spEdit = document.createElement('span')
-        spEdit.innerHTML=' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
+        spEdit.innerHTML=' <i id="edit_'+p+'" style="color:green" class="fa fa-pencil-square-o" aria-hidden="true"></i><br>'
         div.appendChild(spEdit)
         spEdit.hidden=true
         spEdit.onclick=function(){BCO.edit(this,p,bco)}
@@ -258,7 +258,7 @@ BCO.editParm=function(bco,p,div){
             }
         }
     }else{
-        sp.innerHTML=p+': <span id=parmName_'+p+' style="color:navy;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:black" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
+        sp.innerHTML=p+': <span id=parmName_'+p+' style="color:navy;cursor:pointer">'+bc[p]+' <i id="edit_'+p+'" style="color:green" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>'
         document.getElementById('edit_'+p).onclick=function(){BCO.edit(this,p,bco)}
     }
     sp.style.color='maroon'
@@ -304,10 +304,11 @@ BCO.bcoEditor=function(bc,bco){
                 if(nm.length>0){
                     if(newStruct.checked){bco.dt[nm]={}}
                     else{bco.dt[nm]=""}
+                    BCO.editParm(bco,nm)
+                    newDiv.parentElement.removeChild(newDiv)
+                    newParm(bco)
                 }
-                BCO.editParm(bco,nm)
-                newDiv.parentElement.removeChild(newDiv)
-                newParm(bco)
+                    
             }
             $('#newFieldName',newDiv)[0].onkeyup=function(ev){
                 if(ev.keyCode==13){createNewField.click()} // allow enter as an equivalent to button click
