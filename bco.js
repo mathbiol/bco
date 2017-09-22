@@ -24,7 +24,7 @@ BCO = function (url){
 
 BCO.UI=function(div,bco){ // creates UI in target div
     console.log('bcoDiv found, assembling UI')
-    var h = '<h2><img id="qrCode" src="qrCode.jpg" hidden=true><br><button id="hideQR" type="button" class="btn btn-primary">QR</button> <a href="http://bit.ly/bcoexec" target="_blank">bit.ly/bcoexec</a></h2><h3 style="color:maroon">Experimenting with<br> Biocompute Objects (BCO) <a href="https://github.com/mathbiol/bco" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i></a></h3><hr>'
+    var h = '<h2><img id="qrCode" src="qrCode.jpg" hidden=true><br><button id="hideQR" type="button" class="btn btn-primary">QR</button> <a href="http://bit.ly/bcoexec" target="_blank">bit.ly/bcoexec</a></h2><h3 style="color:maroon">Experimenting with<br> Biocompute Objects (BCO) <a href="https://github.com/mathbiol/bco" target="_blank"><i class="fa fa-github-alt" aria-hidden="true"></i><span id="lala" style="font-size:11;vertical-align:middle"> (source)</span></a></h3><hr>'
     h +='<div id="bcoCompDiv"></div>' // where the computation will happen
     div.innerHTML=h
     hideQR.onclick=function(){
@@ -49,20 +49,21 @@ BCO.UI=function(div,bco){ // creates UI in target div
         'EGFR mutation detection in Breast Cancer':'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
     }
     h = '<h4 style="color:navy">Type or paste URL of parent BCO (then Enter): </h4><input id="parentURLinput" style="color:blue" size=100>'
-    h += '<li>... by loading it from your device or <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">by safely retrieving it</a> from your trusted cloud provider:</li>'
-    h += '<span id="getFromDropBox"></span>, ' 
-    h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span>, '
-    h += '<label><input type="file" style="font-size:12;color:navy" id="getFromFile"></label>, '
-    h += '...'
+    h += '<li>... by loading it from your device, from GitHub, or <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">by safely retrieving it</a> from your trusted cloud provider:</li>'
+    h += '<span id="getFromDropBox"></span> ' 
+    h += '<span id="getFromBox" style="cursor:pointer"><img src="pickBox.png" height="24px"></span> '
+    h += '<span id="getFromGitHub" style="cursor:pointer"><img src="github.png" height="22px" style="border:solid;border-color:DarkCyan;border-width:1"></span> '
+    h += '<label><input type="file" style="font-size:12;color:navy" id="getFromFile"></label> '
+    //h += '...'
     //h += '<span id="getFromGDrive" style="cursor:pointer"><img src="gdrive.png" height="24px"></span>, '
     //h += ' Microsoft OneDrive'
     //h += '<span id="getFromPicker" style="cursor:pointer"><img src="https://dev.filestack.com/static/assets/icons/logo-primary.png" height="24px"></span>'
     h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
     h += '<select id="selectParent"></select>'
     h += '<hr style="border-color:maroon">'
-    h += '<div id="bcoEditorDiv"></div>'  
+    h += '<div id="bcoEditorDiv" style="background-color:azure"></div>'  
     h += '<hr style="border-color:maroon">'
-    h += '<div><button id="showEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Show edited BCO structure</button> <button id="copyEditedBco" hidden=true style="color:navy;font-weight:bold;background-color:yellow">Copy to Clipboard</button>'
+    h += '<div><button id="showEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Show edited BCO structure</button> <button id="copyEditedBco" hidden=true style="color:navy;font-weight:bold;background-color:yellow">Copy to Clipboard</button> <button id="saveToGitHub" hidden=true style="color:navy;font-weight:bold;background-color:yellow">Save to GitHub</button>'
     h += '<pre hidden=true></pre></div>'
     h += '<div><button id="downloadEditedBco" style="color:navy;font-weight:bold;background-color:yellow">Download </button> <span style="color:maroon">with fileName</span> <input style="color:blue"> (only works with <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank">Chrome</a> !).</div>'
     bcoCompDiv.innerHTML=h
@@ -98,13 +99,13 @@ BCO.UI=function(div,bco){ // creates UI in target div
         if(this.textContent=="Show edited BCO structure"){
             this.textContent="Hide edited BCO structure"
             this.style.backgroundColor="orange"
-            pr.hidden=copyEditedBco.hidden=false
+            pr.hidden=copyEditedBco.hidden=saveToGitHub.hidden=false
             pr.textContent=JSON.stringify(bco.dt,null,3)
             pr.style.color='green'
         }else{
             this.textContent="Show edited BCO structure"
             this.style.backgroundColor="yellow"
-            pr.hidden=copyEditedBco.hidden=true
+            pr.hidden=copyEditedBco.hidden=saveToGitHub.hidden=true
         }
         //debugger
     }
@@ -167,92 +168,16 @@ BCO.UI=function(div,bco){ // creates UI in target div
             console.log(file,this.result)
             var bco = new BCO()
             var bc = JSON.parse(this.result)
-            bc.parentURL='localFile://'+file.name
+            bc.parentURL='file:///~/'+file.name
             BCO.bcoEditor(bc,bco)
-            parentURLinput.value=file.name
-
+            parentURLinput.value=bc.parentURL
         }
-
-        //debugger
-
     }
-    
-    // filePicking - Google Drive
-    /*
-    gapi.load('auth');gapi.load('picker');
-    getFromGDrive.onclick=function(ev){
-        console.log('clicked on getFromGDrive', ev)
-        var oauthToken // so it can be shared by mutliple functions
-        var developerKey = 'AIzaSyCChql7nN00NVh5fVRhU-O6x97-M5-i62Y';
-        var clientId = '718137972741-u3p75mnbji0ua67o2fvuagpgetlu7doc.apps.googleusercontent.com'
-        var appId = 'biocomputeobject'
-        var pickerApiLoaded = false
-        //var scope = ['https://www.googleapis.com/auth/photos'];
-        var scope = ['https://www.googleapis.com/auth/drive.readonly'];
-        // Use the Google API Loader script to load the google.picker script.
-        function loadPicker() {
-          gapi.load('auth', {'callback': onAuthApiLoad});
-          gapi.load('picker', {'callback': onPickerApiLoad});
-        }
 
-        function onAuthApiLoad() {
-            console.log('running onAuthApiLoad')
-            window.gapi.auth.authorize(
-              {
-                'client_id': clientId,
-                'scope': scope,
-                'immediate': false
-              },
-              handleAuthResult);
-        }
-
-        function onPickerApiLoad() {
-          console.log('running onPickerApiLoad')
-          pickerApiLoaded = true;
-          createPicker();
-        }
-
-        function handleAuthResult(authResult) {
-          console.log('running handleAuthResult')
-          if (authResult && !authResult.error) {
-            oauthToken = authResult.access_token;
-            createPicker();
-          }
-        }
-
-        // Create and render a Picker object for searching images.
-        function createPicker() {
-          console.log('running createPicker')
-          if (pickerApiLoaded && oauthToken) {
-            var view = new google.picker.View(google.picker.ViewId.DOCS);
-            view.setMimeTypes("application/json");
-            var picker = new google.picker.PickerBuilder()
-                .addView(view)
-                .setAppId(appId)
-                .setOAuthToken(oauthToken)
-                .setDeveloperKey(developerKey)
-                .setCallback(pickerCallback)
-                .build();
-             picker.setVisible(true);
-          }
-        }
-
-        // A simple callback implementation.
-        function pickerCallback(data) {
-          console.log('running pickerCallback')
-          if (data.action == google.picker.Action.PICKED) {
-            var fileId = data.docs[0].id;
-            alert('The user selected: ' + fileId);
-          }
-        }
-        onAuthApiLoad()
-        onPickerApiLoad()
-
+    saveToGitHub.onclick=function(){
+        
     }
-    */
-    
-    
-    //return div
+
 }
 
 BCO.edit=function(that,p,bco){
@@ -362,7 +287,7 @@ BCO.bcoEditor=function(bc,bco){
         var newParm=function(bco){
             var newDiv = document.createElement('div')
             newDiv.id='newParmDiv'
-            newDiv.innerHTML='<button style="color:navy" id="createNewField">create new field</button> <input id="newFieldName" style="color:maroon"><br>Literal <input type="checkbox" id="newLit" checked> Structure <input id="newStruct" type="checkbox">'
+            newDiv.innerHTML='<button id="createNewField" class="btn btn-primary">create new field</button> <input id="newFieldName" style="color:maroon"><br>Literal <input type="checkbox" id="newLit" checked> Structure <input id="newStruct" type="checkbox">'
             $('#bcoEditorDiv',bco.div)[0].appendChild(newDiv)
             var newLit = $('#newLit',newDiv)[0]
             var newStruct = $('#newStruct',newDiv)[0]
@@ -435,5 +360,5 @@ BCO.doneEdit=function(that,cmd){
 
 //(function(){new BCO()})()
 
-//bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
-new BCO('BCOexamples/snpDetection.json')
+bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
+//new BCO('BCOexamples/snpDetection.json')
