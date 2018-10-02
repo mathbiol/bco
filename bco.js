@@ -67,7 +67,7 @@ BCO.UI = function(div, bco) {
     //h += ' Microsoft OneDrive'
     //h += '<span id="getFromPicker" style="cursor:pointer"><img src="https://dev.filestack.com/static/assets/icons/logo-primary.png" height="24px"></span>'
     h += '<li>... or pick one from <a href="https://hive.biochemistry.gwu.edu/htscsrs/examples" target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> GWU <i class="fa fa-arrow-left" aria-hidden="true"></i></a>:</li>'
-    h += '<select id="selectParent"></select>'
+    h += '<select id="selectParent" style="background-color:orange"></select>'
     h += '<hr style="border-color:maroon">'
     h += '<div id="bcoEditorDiv" style="background-color:azure"></div>'
     h += '<hr style="border-color:maroon">'
