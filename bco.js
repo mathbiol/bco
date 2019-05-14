@@ -148,18 +148,19 @@ BCO.UI = function(div, bco) {
         //return a
     }
     // filePicking - DropBox
-    /*
-    var buttonDrobBox = Dropbox.createChooseButton({
-        success: function(files) {
-            //console.log("Here's the file link: " + files[0].link)
-            parentURLinput.value = files[0].link
-            bco = new BCO(parentURLinput.value)
-        },
-        linkType: "direct",
-        extensions: ['.json']
-    });
-    getFromDropBox.appendChild(buttonDrobBox)
-    */
+    if(typeof(Dropbox)!="undefined"){
+        var buttonDrobBox = Dropbox.createChooseButton({
+            success: function(files) {
+                //console.log("Here's the file link: " + files[0].link)
+                parentURLinput.value = files[0].link
+                bco = new BCO(parentURLinput.value)
+            },
+            linkType: "direct",
+            extensions: ['.json']
+        });
+        getFromDropBox.appendChild(buttonDrobBox)
+    }
+        
     // filePicking - Box.com
     getFromBox.onclick = function() {
         var boxSelect = new BoxSelect({

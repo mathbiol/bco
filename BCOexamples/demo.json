@@ -1,5 +1,5 @@
 {
-   "id": "bcoFDA123",
+   "id": "cbf2820f4662d9374b5ee9401227b43cf612d599",
    "name": "EGFR mRNA expression in firebase",
    "title": "example of BCO as a manifest for orchestrating Web API ecosystems",
    "version": "0.1",
@@ -43,7 +43,10 @@
    "io_domain": {
       "input_uri_list": [
          "https://mathbiol.github.io/bco/demo.json"
+      ],
+      "API": [
+         "https://github.com/episphere/firebrowse/blob/master/server.js"
       ]
    },
-   "parentURL": "https://mathbiol.github.io/bco/BCOexamples/egfr.json"
+   "parentURL": "https://mathbiol.github.io/bco/BCOexamples/egfr.json, https://mathbiol.github.io/bco/BCOexamples/demo.json"
 }
