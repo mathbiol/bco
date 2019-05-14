@@ -1,0 +1,48 @@
+{
+   "id": "bcoFDA123",
+   "name": "EGFR mRNA expression in firebase",
+   "title": "example of BCO as a manifest for orchestrating Web API ecosystems",
+   "version": "0.1",
+   "createdby": "jonas.dealmeida@nih.gov",
+   "created": "May 13, 2019 17:37:17 ",
+   "modified": "May 13, 2019 17:37:17",
+   "verification_status": "unreviewed",
+   "publication_status": "draft",
+   "usability_domain": [
+      "Breast Cancer EGFR mRNA",
+      "BCO web demo"
+   ],
+   "authors": [
+      {
+         "GoogleScholar": "https://scholar.google.com/citations?user=kOVJzWUAAAAJ",
+         "Name": "Jonas Almeida"
+      }
+   ],
+   "description_domain": {
+      "keywords": [
+         "EGFR",
+         "expression"
+      ],
+      "xref": [
+         "https://www.ncbi.nlm.nih.gov/pubmed/30596645"
+      ]
+   },
+   "execution_domain": {
+      "script": "mathbiol.github.io/bco/demo.js",
+      "pipeline_version": "0.1",
+      "platform": "Web",
+      "prerequisites": [
+         false
+      ],
+      "env_parameters": [
+         null
+      ]
+   },
+   "parametric_domain": {},
+   "io_domain": {
+      "input_uri_list": [
+         "https://mathbiol.github.io/bco/demo.json"
+      ]
+   },
+   "parentURL": "https://mathbiol.github.io/bco/BCOexamples/egfr.json"
+}
