@@ -148,6 +148,7 @@ BCO.UI = function(div, bco) {
         //return a
     }
     // filePicking - DropBox
+    /*
     var buttonDrobBox = Dropbox.createChooseButton({
         success: function(files) {
             //console.log("Here's the file link: " + files[0].link)
@@ -158,6 +159,7 @@ BCO.UI = function(div, bco) {
         extensions: ['.json']
     });
     getFromDropBox.appendChild(buttonDrobBox)
+    */
     // filePicking - Box.com
     getFromBox.onclick = function() {
         var boxSelect = new BoxSelect({
