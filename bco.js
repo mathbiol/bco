@@ -397,8 +397,8 @@ BCO.doneEdit = function(that, cmd) {
 
 }
 
-BCO.web=async function(url){
-    debugger
+BCO.webExe=async function(url){
+    return await (await fetch((await (await fetch(url)).json()).execution_domain.script)).json()
 }
 
 //(function(){new BCO()})()
