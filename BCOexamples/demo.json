@@ -24,11 +24,12 @@
          "expression"
       ],
       "xref": [
-         "https://www.ncbi.nlm.nih.gov/pubmed/30596645"
+         "https://www.ncbi.nlm.nih.gov/pubmed/30596645",
+         "https://observablehq.com/@episphere/firebrowse"
       ]
    },
    "execution_domain": {
-      "script": "mathbiol.github.io/bco/demo.js",
+      "script": "https://firebrowse.herokuapp.com?http://firebrowse.org/api/v1/Samples/mRNASeq?format=json&gene=EGFR&cohort=BRCA&protocol=RSEM&page=1&page_size=250&sort_by=cohort",
       "pipeline_version": "0.1",
       "platform": "Web",
       "prerequisites": [

@@ -54,7 +54,8 @@ BCO.UI = function(div, bco) {
         'RNA-seq analysis of ER': 'https://mathbiol.github.io/bco/BCOexamples/rnaSeq.json',
         'Quasispecies_analysis_of_HIV-1_viruses': 'https://mathbiol.github.io/bco/BCOexamples/hiv.json',
         'Viral taxID 10239 screening': 'https://mathbiol.github.io/bco/BCOexamples/viral.json',
-        'EGFR mutation detection in Breast Cancer': 'https://mathbiol.github.io/bco/BCOexamples/egfr.json'
+        'EGFR mutation detection in Breast Cancer': 'https://mathbiol.github.io/bco/BCOexamples/egfr.json',
+        'EGFR mRNA example of bco web': 'https://mathbiol.github.io/bco/BCOexamples/demo.json'
     }
     h = '<h4 style="color:navy">Type or paste URL of parent BCO (then Enter): </h4><input id="parentURLinput" style="color:blue" size=100>'
     h += '<li>... by loading it from your device, from GitHub, or <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333212/" target="_blank">by safely retrieving it</a> from your trusted cloud provider:</li>'
@@ -185,7 +186,6 @@ BCO.UI = function(div, bco) {
             parentURLinput.value = bc.parentURL
         }
     }
-
     saveToGitHub.onclick = function() {}
 
 }
@@ -397,7 +397,12 @@ BCO.doneEdit = function(that, cmd) {
 
 }
 
+BCO.web=async function(url){
+    debugger
+}
+
 //(function(){new BCO()})()
 
 bco = new BCO('https://mathbiol.github.io/bco/BCOexamples/snpDetection.json')
 //new BCO('BCOexamples/snpDetection.json')
+
